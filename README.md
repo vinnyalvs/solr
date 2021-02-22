@@ -236,9 +236,56 @@ $ brew install solr
 
 O Solr possui um Painel de Administração, acessível via web. Concluída a instalação, acesse de qualquer navegador o endereço ```http://localhost:8983/solr``` ou ```http://<ip ou domínio>:8983/solr``` se for acessar remotamente o servidor que está hospedando o Solr.
 
-## Segurança
+# Segurança
 
-Por padrão, o acesso ao Painel de Administração não é protegido por senha, mas você pode configurar isso seguindo os passos a seguir.
+Por padrão, o acesso ao Painel de Administração não é protegido por senha, mas você pode configurar isso seguindo os passos a seguir. Os passos a seguir são para a versão standalone do Solr e não apra o Solr Cloud.
+
+Para definir uma segurança padrão no solr é bem simples, na pasta ```/data``` basta colocar um arquivo security.json
+
+{
+"authentication":{
+   "class":"solr.BasicAuthPlugin",
+   "credentials":{"solr":"IV0EHq1OnNrj6gvRCwvFwTrZ1+z1oBbnQdiVC3otuq0= Ndd7LKvVBAaZIF0QAVi1ekCfAJXr1GGfLtRUXhgrF8c="},
+   "blockUnknown":"true"
+},
+"authorization":{
+   "class":"solr.RuleBasedAuthorizationPlugin",
+   "user-role":{"solr":"admin"},
+   "permissions":[{"name":"security-edit",
+                  "role":"admin"}]
+}}
+
+## O que está definido neste exemplo:
+
+A autenticação básica e os plug-ins de autorização baseados em regras estão ativados.
+
+### Seção authentication
+
+Um usuário chamado solr, com a senha SolrRocks foi definido.
+
+Devido ao parametro blockUnknown estar definido como true, todas as solicitações sem credenciais serão rejeitadas com um erro 401. 
+
+Ao definir 'blockUnknown' como false (ou remover) é possível realizar requisições sem autenfificação.  No entanto, se um determinado recurso for protegido por uma regra, eles serão rejeitados com um erro 401.
+
+### Seção authorization
+
+O usuário 'solr' foi definido para a função 'admin'.
+
+A função 'admin' foi definida e tem permissão para editar as configurações de segurança.
+
+
+### Como fazer requisições
+
+Após definir as configurações de segurança será necessário enviar o usuário e senha ao fazer requesições. Aqui está um exemplo usando curl.
+
+Exemplo: 
+
+curl --user solr:SolrRocks http://localhost:8983/solr/CoreName/select?q=query
+
+
+
+
+
 
 # Terminologia
 
