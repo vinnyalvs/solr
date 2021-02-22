@@ -25,7 +25,8 @@
         * [Vagrant](#vagrant)
         * [Docker](#docker)
         * [Homebrew](#homebrew)
-* [Acessando o Painel de Administração](#acessando-o-painel-de-administração)
+* [Painel de Administração](#acessando-o-painel-de-administração)
+* [Segurança](#segurança)
 * [Terminologia](#terminologia)
     * [Indexing (Indexação)](#indexing-indexacao)
     * [Query](#query)
@@ -242,6 +243,7 @@ Por padrão, o acesso ao Painel de Administração não é protegido por senha, 
 
 Para definir uma segurança padrão no solr é bem simples, na pasta ```/data``` basta colocar um arquivo security.json
 
+```
 {
 "authentication":{
    "class":"solr.BasicAuthPlugin",
@@ -254,6 +256,7 @@ Para definir uma segurança padrão no solr é bem simples, na pasta ```/data```
    "permissions":[{"name":"security-edit",
                   "role":"admin"}]
 }}
+```
 
 ## O que está definido neste exemplo:
 
@@ -280,10 +283,7 @@ Após definir as configurações de segurança será necessário enviar o usuár
 
 Exemplo: 
 
-curl --user solr:SolrRocks http://localhost:8983/solr/CoreName/select?q=query
-
-
-
+``` curl --user solr:SolrRocks http://localhost:8983/solr/CoreName/select?q=query ```
 
 
 
